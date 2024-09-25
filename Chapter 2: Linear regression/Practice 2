@@ -1,11 +1,14 @@
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+df = pd.read_csv('/content/Practice2_Chapter2.csv')
+
 
 data = {
-    'TV': [230.1, 44.5, 17.2, 151.5, 180.8],
-    'Radio': [37.8, 39.3, 45.9, 41.3, 10.8],
-    'Newspaper': [69.2, 45.1, 69.3, 58.5, 58.4],
-    'Sales': [22.1, 10.4, 12.0, 16.5, 17.9]
+    'TV': df['TV'].tolist(),
+    'Radio': df['Radio'].tolist(),
+    'Newspaper': df['Newspaper'].tolist(),
+    'Sales': df['Sales'].tolist()
 }
 
 X = np.array([data['TV'], data['Radio'], data['Newspaper']]).T  
@@ -58,14 +61,14 @@ weights_optimal, bias_optimal, cost_history = gradient_descent(X_normalized, y, 
 #print("Optimal weights:", weights_optimal)
 #print("Optimal bias:", bias_optimal)
 
-new_data = np.array([44.5, 39.3, 45.1])
+new_data = np.array([151.5,41.3,58.5])
 new_data_normalized = (new_data - means) / stds  
 predicted_sales = new_data_normalized.dot(weights_optimal) + bias_optimal
 print("Predicted sales:", predicted_sales)
 
-#plt.plot(cost_history)
-#plt.title("Cost Function over Iterations")
-#plt.xlabel("Iteration")
-#plt.ylabel("Cost")
-#plt.grid(True)
-#plt.show()
+plt.plot(cost_history)
+plt.title("Cost Function over Iterations")
+plt.xlabel("Iteration")
+plt.ylabel("Cost")
+plt.grid(True)
+plt.show()
