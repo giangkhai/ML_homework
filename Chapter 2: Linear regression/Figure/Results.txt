@@ -1,0 +1,5 @@
+(1) The features here have been normalized to have a mean of 0 and a variance of 1
+  Practice 1:
+      Scores = 62.749999999998224 + 5.428033203433985*hours
+  Practice 2:
+      Sales = 15.130046491206553 + 4.66254397*TV + 1.58371241*Radio + 0.00827409*Newspaper
