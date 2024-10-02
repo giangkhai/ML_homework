@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-b = 1e-20 %bias
+b = 1e-20 
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
