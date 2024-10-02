@@ -65,25 +65,25 @@ weights, cost_history = gradient_descent(X, y, weights, learning_rate, iteration
 
 cost_history = np.array(cost_history).flatten()
 
-plt.figure(figsize=(8, 6))
-plt.plot(range(len(cost_history)), cost_history, color='blue')
-plt.xlabel('Epoch')
-plt.ylabel('Cost function')
-plt.grid(True)
-plt.show()
+#plt.figure(figsize=(8, 6))
+#plt.plot(range(len(cost_history)), cost_history, color='blue')
+#plt.xlabel('Epoch')
+#plt.ylabel('Cost function')
+#plt.grid(True)
+#plt.show()
 
 
 binary_predictions = predict(X, weights)
 
 
-plt.figure(figsize=(8, 6))
-plt.scatter(grain_size, spiders, color='blue', label=' Data')
-plt.scatter(grain_size, binary_predictions, color='red', marker='x', label='Predicted data')
-plt.xlabel('Grain Size (mm)')
-plt.ylabel('Spider Presence (0 or 1)')
-plt.legend()
-plt.grid(True)
-plt.show()
+#plt.figure(figsize=(8, 6))
+#plt.scatter(grain_size, spiders, color='blue', label=' Data')
+#plt.scatter(grain_size, binary_predictions, color='red', marker='x', label='Predicted data')
+#plt.xlabel('Grain Size (mm)')
+#plt.ylabel('Spider Presence (0 or 1)')
+#plt.legend()
+#plt.grid(True)
+#plt.show()
 
 
 accuracy = np.mean(binary_predictions == y.flatten()) * 100
