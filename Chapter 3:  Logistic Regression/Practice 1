@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+b = 1e-20 %bias
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
@@ -9,7 +9,7 @@ def sigmoid(z):
 def compute_cost(X, y, weights):
     m = len(y)
     h = sigmoid(X @ weights)
-    cost = -(1/m) * (y.T @ np.log(h) + (1 - y).T @ np.log(1 - h))
+    cost = -(1/m) * (y.T @ np.log(h+b) + (1 - y).T @ np.log(1 - h+b))
     return cost
 
 def gradient_descent(X, y, weights, learning_rate, iterations, epsilon):
@@ -57,7 +57,7 @@ weights = np.zeros((X.shape[1], 1))
 
 learning_rate = 1e-3
 iterations = 50000
-epsilon = 1e-6 
+epsilon = 1e-15 
 
 
 weights, cost_history = gradient_descent(X, y, weights, learning_rate, iterations, epsilon)
@@ -65,25 +65,25 @@ weights, cost_history = gradient_descent(X, y, weights, learning_rate, iteration
 
 cost_history = np.array(cost_history).flatten()
 
-#plt.figure(figsize=(8, 6))
-#plt.plot(range(len(cost_history)), cost_history, color='blue')
-#plt.xlabel('Epoch')
-#plt.ylabel('Cost function')
-#plt.grid(True)
-#plt.show()
+plt.figure(figsize=(8, 6))
+plt.plot(range(len(cost_history)), cost_history, color='blue')
+plt.xlabel('Epoch')
+plt.ylabel('Cost function')
+plt.grid(True)
+plt.show()
 
 
 binary_predictions = predict(X, weights)
 
 
-#plt.figure(figsize=(8, 6))
-#plt.scatter(grain_size, spiders, color='blue', label=' Data')
-#plt.scatter(grain_size, binary_predictions, color='red', marker='x', label='Predicted data')
-#plt.xlabel('Grain Size (mm)')
-#plt.ylabel('Spider Presence')
-#plt.legend()
-#plt.grid(True)
-#plt.show()
+plt.figure(figsize=(8, 6))
+plt.scatter(grain_size, spiders, color='blue', label=' Data')
+plt.scatter(grain_size, binary_predictions, color='red', marker='x', label='Predicted data')
+plt.xlabel('Grain Size (mm)')
+plt.ylabel('Spider Presence')
+plt.legend()
+plt.grid(True)
+plt.show()
 
 
 accuracy = np.mean(binary_predictions == y.flatten()) * 100
