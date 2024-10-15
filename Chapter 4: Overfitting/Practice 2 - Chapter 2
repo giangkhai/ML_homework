@@ -1,0 +1,89 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv('/content/Practice2_Chapter2.csv')
+
+data = {
+    'TV': df['TV'].tolist(),
+    'Radio': df['Radio'].tolist(),
+    'Newspaper': df['Newspaper'].tolist(),
+    'Sales': df['Sales'].tolist()
+}
+
+X = np.array([data['TV'], data['Radio'], data['Newspaper']]).T  
+X_extended = np.hstack([
+    X, 
+    X ** 2,  
+    X[:, 0:1] * X[:, 1:2],  
+    X[:, 0:1] * X[:, 2:3],  
+    X[:, 1:2] * X[:, 2:3],  
+])
+
+y = np.array(data['Sales'])
+
+means = np.mean(X_extended, axis=0)
+stds = np.std(X_extended, axis=0)
+X_normalized = (X_extended - means) / stds  
+
+m, n = X_normalized.shape
+weights = np.zeros(n)
+bias = 1
+lr = 1e-4
+iterations = 100000
+tolerance = 1e-9  
+lambd = 1e-3  
+
+def cost_function(X, y, weights, bias, lambd):
+    m = len(y)
+    predictions = X.dot(weights) + bias
+    cost = (1 / (2 * m)) * np.sum((predictions - y) ** 2)
+    regularization = (lambd / (2 * m)) * np.sum(weights ** 2)
+    return cost + regularization
+
+def gd(X, y, weights, bias, lr, iterations, tolerance, lambd):
+    m = len(y)
+    cost_history = []
+
+    for i in range(iterations):
+        predictions = X.dot(weights) + bias
+        error = predictions - y
+
+        weights_gradient = (1 / m) * X.T.dot(error) + (lambd / m) * weights
+        bias_gradient = (1 / m) * np.sum(error)
+
+        weights -= lr * weights_gradient
+        bias -= lr * bias_gradient
+
+        cost = cost_function(X, y, weights, bias, lambd)
+        cost_history.append(cost)
+
+        if i > 0 and abs(cost_history[-2] - cost_history[-1]) < tolerance:
+            print(f"Converged at iteration {i}")
+            break
+
+    return weights, bias, cost_history
+
+weights_optimal, bias_optimal, cost_history = gd(
+    X_normalized, y, weights, bias, lr, iterations, tolerance, lambd
+)
+
+new_data = np.array([180.8, 10.8, 58.4])
+new_data_extended = np.hstack([
+    new_data,
+    new_data ** 2,
+    new_data[0] * new_data[1],
+    new_data[0] * new_data[2],
+    new_data[1] * new_data[2]
+])
+new_data_normalized = (new_data_extended - means) / stds
+
+predicted_sales = new_data_normalized.dot(weights_optimal) + bias_optimal
+print("Predicted sales:", predicted_sales)
+
+plt.plot(cost_history)
+plt.title("Loss vs Epochs with Regularization")
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.grid(True)
+plt.show()
