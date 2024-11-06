@@ -11,7 +11,6 @@ data = data.iloc[:, :6]
 mean = data.mean()
 std = data.std()
 
-# Lọc dữ liệu
 pos_data = data[
     (data >= mean - 3 * std) & (data <= mean + 3 * std)
 ].dropna()
